@@ -1,17 +1,59 @@
 use std::collections::HashMap;
-
+use std::io;
+use std::process::exit;
 
 fn main() {
-    let mut even_vector = vec![1,2,3,4,3,3,7,8,9,10];
-    let mut odd_vector = vec![1,2,3,4,5,2,7];
 
-    println!("The Even median number is {}",median(&mut even_vector));
-    println!("The Even mode is {}", mode(& mut even_vector));
+    while true {
+        let mut process_string = String::new();
+        println!("Welcome to the statistics App. Press 1 to exit or 2 to continue.");
 
-    println!("\n");
+        io::stdin().read_line(&mut process_string).expect("Failed to read line");
 
-    println!("The odd median number is {}",median(&mut odd_vector));
-    println!("The odd mode is {}", mode(& mut odd_vector));
+        if process_string.trim() == "2"{
+            return;
+        }
+
+        println!("Enter a list of numbers seperated by commas (,). Press enter to get median and mode");
+        let mut input_string = String::new();
+        let mut vector = Vec::new();
+        let mut numbered_list = Vec::new();
+        io::stdin().read_line(&mut input_string).expect("Failed to read line");
+
+        vector = input_string.trim().split_terminator(',').collect();
+
+        println!("The vector is a list {vector:?}");
+
+        for i in vector {
+
+            let mut parsed_number = i.parse::<i32>();
+
+            match parsed_number {
+                Ok(num) => {
+                    numbered_list.push(num)
+                },
+                Err(e)=>{
+                    println!("{i} is not a number");
+                    break;
+                }
+            }
+        }
+
+        if numbered_list.len() > 0{
+
+            println!("The list is {numbered_list:?}");
+
+            println!("The median of the list is {}",median(&mut numbered_list));
+
+            println!("The mode of the list is {}",mode(&mut numbered_list));
+
+
+        }else{
+            println!("The list must be populated.")
+        }
+
+    }
+
 
 }
 
